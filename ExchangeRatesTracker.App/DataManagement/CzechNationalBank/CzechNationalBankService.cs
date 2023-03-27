@@ -11,6 +11,7 @@ namespace ExchangeRatesTracker.App.DataManagement.CzechNationalBank
         private readonly ICzechNationalBankHttpClient _czechNationalBankHttpClient;
         private readonly IServiceScopeFactory _serviceScopeFactory;
 
+        // Do not change it for the current year, as this leads to problems. Edit it ONLY before first run
         private const int minYear = 1991;
 
         public CzechNationalBankService(
@@ -52,7 +53,7 @@ namespace ExchangeRatesTracker.App.DataManagement.CzechNationalBank
 
                 var cnbExchangeRates = await _czechNationalBankHttpClient.GetExchangeRates(year, cancellationToken);
 
-                if (year == years.First())
+                if (year == years.First() && year != minYear)
                 {
                     cnbExchangeRates = cnbExchangeRates.Where(r => r.Date > dateFrom.Date);
                 }
